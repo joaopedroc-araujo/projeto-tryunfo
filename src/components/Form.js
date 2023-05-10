@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class Form extends Component {
   render() {
+    const { cardInfo, onInputChange } = this.props;
+
     const {
       cardName,
       cardDescription,
@@ -11,11 +14,9 @@ export default class Form extends Component {
       cardImage,
       cardRare,
       cardTrunfo,
-      // hasTrunfo,
       isSaveButtonDisabled,
-      onInputChange,
-      onSaveButtonClick,
-    } = this.props || {};
+      // onSaveButtonClick,
+    } = cardInfo;
 
     return (
       <form>
@@ -105,10 +106,13 @@ export default class Form extends Component {
         </label>
         <label htmlFor="save-button">
           <button
+            name="isSaveButtonDisabled"
             type="submit"
             data-testid="save-button"
+            // eslint-disable-next-line no-unneeded-ternary
             disabled={ !!isSaveButtonDisabled }
-            onClick={ onSaveButtonClick }
+            onChange={ onInputChange }
+            // onClick={ onSaveButtonClick }
           >
             Salvar
           </button>
@@ -117,3 +121,18 @@ export default class Form extends Component {
     );
   }
 }
+
+Form.propTypes = {
+  cardInfo: PropTypes.shape({
+    cardName: PropTypes.string.isRequired,
+    cardDescription: PropTypes.string.isRequired,
+    cardAttr1: PropTypes.number.isRequired,
+    cardAttr2: PropTypes.number.isRequired,
+    cardAttr3: PropTypes.number.isRequired,
+    cardImage: PropTypes.string.isRequired,
+    cardRare: PropTypes.oneOf(['normal', 'raro', 'muito raro']).isRequired,
+    cardTrunfo: PropTypes.bool.isRequired,
+    isSaveButtonDisabled: PropTypes.bool.isRequired,
+  }).isRequired,
+  onInputChange: PropTypes.func.isRequired,
+};
