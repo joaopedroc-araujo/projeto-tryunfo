@@ -17,6 +17,7 @@ class App extends React.Component {
       isSaveButtonDisabled: true,
     },
     cardList: [],
+    hasTrunfo: false,
   };
 
   onInputChange = (event) => {
@@ -66,7 +67,7 @@ class App extends React.Component {
   onSaveButtonClick = (event) => {
     event.preventDefault();
     const { cardInfo, cardList, hasTrunfo } = this.state;
-    const changeCard = {
+    const changedCards = {
       cardName: cardInfo.cardName,
       cardDescription: cardInfo.cardDescription,
       cardAttr1: cardInfo.cardAttr1,
@@ -75,10 +76,11 @@ class App extends React.Component {
       cardImage: cardInfo.cardImage,
       cardRare: cardInfo.cardRare,
       cardTrunfo: cardInfo.cardTrunfo,
+      cardId: cardList.length + 1,
     };
 
     // console.log(changeCard.hasTrunfo);
-    const newList = [...cardList, changeCard];
+    const newCardList = [...cardList, changedCards];
 
     this.setState({
       cardInfo: {
@@ -92,10 +94,27 @@ class App extends React.Component {
         cardTrunfo: false,
         isSaveButtonDisabled: true,
       },
-      cardList: newList,
+      cardList: newCardList,
       hasTrunfo: hasTrunfo || cardInfo.cardTrunfo,
     });
     // console.log(cardInfo.hasTrunfo);
+  };
+
+  handleDeleteButtonClick = (cardId) => {
+    const { cardList } = this.state;
+    const deletedCard = cardList.find((card) => card.cardId === cardId);
+    console.log(deletedCard);
+    const hasDeletedCardTrunfo = deletedCard.cardTrunfo;
+    console.log(hasDeletedCardTrunfo);
+    const filterAllCards = cardList.filter((card) => card.cardId !== cardId);
+    console.log(filterAllCards);
+    const cardListHasTrunfo = filterAllCards.some((card) => card.cardTrunfo === true);
+    console.log(cardListHasTrunfo);
+
+    this.setState({
+      cardList: filterAllCards,
+      hasTrunfo: cardListHasTrunfo,
+    });
   };
 
   render() {
@@ -118,12 +137,21 @@ class App extends React.Component {
           <h1>Tryunfo</h1>
         </div>
         <Form
+          // cardName="Nome da carta"
+          // cardDescription="Descrição da carta"
+          // cardAttr1={ cardAttr1 }
+          // cardAttr2={ cardAttr2 }
+          // cardAttr3={ cardAttr3 }
+          // cardImage={ cardImage }
+          // cardRare={ cardRare }
+          // cardTrunfo={ cardTrunfo }
+          // isSaveButtonDisabled={ isSaveButtonDisabled }
           hasTrunfo={ hasTrunfo }
           cardInfo={ cardInfo }
           cardList={ cardList }
           onInputChange={ this.onInputChange }
           onSaveButtonClick={ this.onSaveButtonClick }
-          verifyTrunfo={ this.verifyTrunfo }
+          // handleDeleteButtonClick={ this.handleDeleteButtonClick }
         />
         <Card
           { ...cardInfo }
@@ -134,6 +162,12 @@ class App extends React.Component {
             {cardList.map((card) => (
               <li key={ card.cardName }>
                 <Card { ...card } />
+                <button
+                  data-testid="delete-button"
+                  onClick={ () => this.handleDeleteButtonClick(card.cardId) }
+                >
+                  Excluir
+                </button>
               </li>))}
           </ul>
         </div>

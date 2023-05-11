@@ -25,6 +25,7 @@ export default class Form extends Component {
     return (
       <form>
         <label>
+          Nome da carta
           <input
             name="cardName"
             type="text"
@@ -109,6 +110,7 @@ export default class Form extends Component {
                 data-testid="trunfo-input"
                 onChange={ onInputChange }
                 checked={ cardTrunfo }
+                // onClick={ handleDeleteButtonClick }
               />
             )}
         </label>
