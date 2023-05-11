@@ -16,9 +16,11 @@ class App extends React.Component {
       cardTrunfo: false,
       isSaveButtonDisabled: true,
     },
+    cardList: [],
   };
 
   onInputChange = (event) => {
+    // console.log(this);
     const { name, type, checked, value } = event.target;
     const valueField = type === 'checkbox' ? checked : value;
 
@@ -39,13 +41,13 @@ class App extends React.Component {
         && cardInfo.cardImage;
 
       const filledAttr = parseInt(cardInfo.cardAttr1, 10) >= 0
-        && parseInt(cardInfo.cardAttr1, 10) <= maxAttrPerCard
+      && parseInt(cardInfo.cardAttr1, 10) <= maxAttrPerCard
         && parseInt(cardInfo.cardAttr2, 10) >= 0
         && parseInt(cardInfo.cardAttr2, 10) <= maxAttrPerCard
         && parseInt(cardInfo.cardAttr3, 10) >= 0
         && parseInt(cardInfo.cardAttr3, 10) <= maxAttrPerCard
         && parseInt(cardInfo.cardAttr1, 10)
-          + parseInt(cardInfo.cardAttr2, 10)
+        + parseInt(cardInfo.cardAttr2, 10)
           + parseInt(cardInfo.cardAttr3, 10)
           <= maxAttrAdd;
 
@@ -58,11 +60,49 @@ class App extends React.Component {
         },
       };
     });
+    // console.log(this);
   };
 
-  render() {
-    const { cardInfo } = this.state;
+  onSaveButtonClick = (event) => {
+    event.preventDefault();
+    console.log('clicou');
+    const { cardInfo, cardList } = this.state;
+    const changeCard = {
+      cardName: cardInfo.cardName,
+      cardDescription: cardInfo.cardDescription,
+      cardAttr1: cardInfo.cardAttr1,
+      cardAttr2: cardInfo.cardAttr2,
+      cardAttr3: cardInfo.cardAttr3,
+      cardImage: cardInfo.cardImage,
+      cardRare: 'normal',
+      cardTrunfo: false,
+    };
 
+    const newList = [...cardList, changeCard];
+
+    this.setState({
+      cardInfo: {
+        cardName: '',
+        cardDescription: '',
+        cardAttr1: '0',
+        cardAttr2: '0',
+        cardAttr3: '0',
+        cardImage: '',
+        cardRare: 'normal',
+        cardTrunfo: false,
+        isSaveButtonDisabled: true,
+      },
+      cardList: newList,
+    });
+  };
+  // outraFunçãoDeTeste = () => {
+  //   console.log('clicou');
+  // };
+
+  render() {
+    const { cardInfo, cardList } = this.state;
+    // console.log(this);
+    console.log(cardList);
     return (
       <>
         <div>
@@ -71,11 +111,20 @@ class App extends React.Component {
         <Form
           cardInfo={ cardInfo }
           onInputChange={ this.onInputChange }
-          // onClick={ this.onSaveButtonClick }
+          onSaveButtonClick={ this.onSaveButtonClick }
         />
         <Card
           { ...cardInfo }
+          cardInfo={ cardInfo }
         />
+        <div>
+          <ul>
+            {cardList.map((card) => (
+              <li key={ card.cardName }>
+                <Card { ...card } />
+              </li>))}
+          </ul>
+        </div>
       </>
     );
   }
