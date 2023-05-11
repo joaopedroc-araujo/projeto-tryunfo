@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 export default class Form extends Component {
   render() {
-    const { cardInfo, onInputChange, onSaveButtonClick } = this.props;
+    const { cardInfo, onInputChange, onSaveButtonClick,
+      hasTrunfo } = this.props;
 
     const {
       cardName,
@@ -19,6 +20,8 @@ export default class Form extends Component {
 
     // console.log(onSaveButtonClick);
     // console.log(cardName);
+    // console.log(verifyTrunfo);
+    // console.log(cardList.hasTrunfo);
     return (
       <form>
         <label>
@@ -26,7 +29,7 @@ export default class Form extends Component {
             name="cardName"
             type="text"
             data-testid="name-input"
-            placeholder="Digite o nome da carta"
+            placeholder="Nome da carta"
             onChange={ onInputChange }
             value={ cardName }
           />
@@ -97,22 +100,25 @@ export default class Form extends Component {
         <label>
           Essa carta é Super Trunfo?
           {' '}
-          <input
-            name="cardTrunfo"
-            type="checkbox"
-            data-testid="trunfo-input"
-            onChange={ onInputChange }
-            checked={ cardTrunfo }
-          />
+          {hasTrunfo
+            ? (<span>Você já tem um Super Trunfo em seu baralho</span>)
+            : (
+              <input
+                name="cardTrunfo"
+                type="checkbox"
+                data-testid="trunfo-input"
+                onChange={ onInputChange }
+                checked={ cardTrunfo }
+              />
+            )}
         </label>
         <button
           name="isSaveButtonDisabled"
           type="submit"
           data-testid="save-button"
-          disabled={ isSaveButtonDisabled }
+          disabled={ !!isSaveButtonDisabled }
           // onClick={ outraFunçãoDeTeste }
           onClick={ onSaveButtonClick }
-          // onChange={ onInputChange }
         >
           Salvar
         </button>
@@ -133,6 +139,7 @@ Form.propTypes = {
     cardTrunfo: PropTypes.bool.isRequired,
     isSaveButtonDisabled: PropTypes.bool.isRequired,
   }).isRequired,
+  hasTrunfo: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onSaveButtonClick: PropTypes.func.isRequired,
 };

@@ -65,8 +65,7 @@ class App extends React.Component {
 
   onSaveButtonClick = (event) => {
     event.preventDefault();
-    console.log('clicou');
-    const { cardInfo, cardList } = this.state;
+    const { cardInfo, cardList, hasTrunfo } = this.state;
     const changeCard = {
       cardName: cardInfo.cardName,
       cardDescription: cardInfo.cardDescription,
@@ -74,10 +73,11 @@ class App extends React.Component {
       cardAttr2: cardInfo.cardAttr2,
       cardAttr3: cardInfo.cardAttr3,
       cardImage: cardInfo.cardImage,
-      cardRare: 'normal',
-      cardTrunfo: false,
+      cardRare: cardInfo.cardRare,
+      cardTrunfo: cardInfo.cardTrunfo,
     };
 
+    // console.log(changeCard.hasTrunfo);
     const newList = [...cardList, changeCard];
 
     this.setState({
@@ -93,25 +93,37 @@ class App extends React.Component {
         isSaveButtonDisabled: true,
       },
       cardList: newList,
+      hasTrunfo: hasTrunfo || cardInfo.cardTrunfo,
     });
+    // console.log(cardInfo.hasTrunfo);
   };
-  // outraFunçãoDeTeste = () => {
-  //   console.log('clicou');
-  // };
 
   render() {
-    const { cardInfo, cardList } = this.state;
+    const { cardInfo, cardList, hasTrunfo } = this.state;
+    // const {
+    //   cardName,
+    //   cardDescription,
+    //   cardAttr1,
+    //   cardAttr2,
+    //   cardAttr3,
+    //   cardImage,
+    //   cardRare,
+    //   cardTrunfo,
+    //   isSaveButtonDisabled,
+    // } = cardInfo;
     // console.log(this);
-    console.log(cardList);
     return (
       <>
         <div>
           <h1>Tryunfo</h1>
         </div>
         <Form
+          hasTrunfo={ hasTrunfo }
           cardInfo={ cardInfo }
+          cardList={ cardList }
           onInputChange={ this.onInputChange }
           onSaveButtonClick={ this.onSaveButtonClick }
+          verifyTrunfo={ this.verifyTrunfo }
         />
         <Card
           { ...cardInfo }
