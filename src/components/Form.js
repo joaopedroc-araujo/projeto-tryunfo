@@ -3,9 +3,6 @@ import PropTypes from 'prop-types';
 
 export default class Form extends Component {
   render() {
-    const { cardInfo, onInputChange, onSaveButtonClick,
-      hasTrunfo } = this.props;
-
     const {
       cardName,
       cardDescription,
@@ -16,16 +13,18 @@ export default class Form extends Component {
       cardRare,
       cardTrunfo,
       isSaveButtonDisabled,
-    } = cardInfo || {};
+      onInputChange,
+      onSaveButtonClick,
+      hasTrunfo,
+    } = this.props;
 
     // console.log(onSaveButtonClick);
     // console.log(cardName);
     // console.log(verifyTrunfo);
-    // console.log(cardList.hasTrunfo);
     return (
       <form>
         <label>
-          Nome da carta
+          Nome da carta:
           <input
             name="cardName"
             type="text"
@@ -36,6 +35,7 @@ export default class Form extends Component {
           />
         </label>
         <label>
+          Descrição da Carta:
           <input
             name="cardDescription"
             type="textarea"
@@ -110,7 +110,6 @@ export default class Form extends Component {
                 data-testid="trunfo-input"
                 onChange={ onInputChange }
                 checked={ cardTrunfo }
-                // onClick={ handleDeleteButtonClick }
               />
             )}
         </label>
@@ -130,17 +129,15 @@ export default class Form extends Component {
 }
 
 Form.propTypes = {
-  cardInfo: PropTypes.shape({
-    cardName: PropTypes.string.isRequired,
-    cardDescription: PropTypes.string.isRequired,
-    cardAttr1: PropTypes.string.isRequired,
-    cardAttr2: PropTypes.string.isRequired,
-    cardAttr3: PropTypes.string.isRequired,
-    cardImage: PropTypes.string.isRequired,
-    cardRare: PropTypes.oneOf(['normal', 'raro', 'muito raro']).isRequired,
-    cardTrunfo: PropTypes.bool.isRequired,
-    isSaveButtonDisabled: PropTypes.bool.isRequired,
-  }).isRequired,
+  cardName: PropTypes.string.isRequired,
+  cardDescription: PropTypes.string.isRequired,
+  cardAttr1: PropTypes.string.isRequired,
+  cardAttr2: PropTypes.string.isRequired,
+  cardAttr3: PropTypes.string.isRequired,
+  cardImage: PropTypes.string.isRequired,
+  cardRare: PropTypes.oneOf(['normal', 'raro', 'muito raro']).isRequired,
+  cardTrunfo: PropTypes.bool.isRequired,
+  isSaveButtonDisabled: PropTypes.bool.isRequired,
   hasTrunfo: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onSaveButtonClick: PropTypes.func.isRequired,

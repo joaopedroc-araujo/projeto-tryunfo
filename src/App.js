@@ -102,14 +102,10 @@ class App extends React.Component {
 
   handleDeleteButtonClick = (cardId) => {
     const { cardList } = this.state;
-    const deletedCard = cardList.find((card) => card.cardId === cardId);
-    console.log(deletedCard);
-    const hasDeletedCardTrunfo = deletedCard.cardTrunfo;
-    console.log(hasDeletedCardTrunfo);
     const filterAllCards = cardList.filter((card) => card.cardId !== cardId);
-    console.log(filterAllCards);
+    // console.log(filterAllCards);
     const cardListHasTrunfo = filterAllCards.some((card) => card.cardTrunfo === true);
-    console.log(cardListHasTrunfo);
+    // console.log(cardListHasTrunfo);
 
     this.setState({
       cardList: filterAllCards,
@@ -147,11 +143,9 @@ class App extends React.Component {
           // cardTrunfo={ cardTrunfo }
           // isSaveButtonDisabled={ isSaveButtonDisabled }
           hasTrunfo={ hasTrunfo }
-          cardInfo={ cardInfo }
-          cardList={ cardList }
+          { ...cardInfo }
           onInputChange={ this.onInputChange }
           onSaveButtonClick={ this.onSaveButtonClick }
-          // handleDeleteButtonClick={ this.handleDeleteButtonClick }
         />
         <Card
           { ...cardInfo }
@@ -160,7 +154,7 @@ class App extends React.Component {
         <div>
           <ul>
             {cardList.map((card) => (
-              <li key={ card.cardName }>
+              <li key={ card.cardId }>
                 <Card { ...card } />
                 <button
                   data-testid="delete-button"
