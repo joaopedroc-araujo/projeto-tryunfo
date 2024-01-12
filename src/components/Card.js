@@ -9,7 +9,13 @@ export default class Card extends Component {
     return (
       <div>
         <h3 data-testid="name-card">{cardName}</h3>
-        <img data-testid="image-card" src={ cardImage } alt={ cardName } />
+        { cardImage.length > 0
+        && <img
+          data-testid="image-card"
+          src={ cardImage }
+          alt={ cardName }
+          width="200px"
+        />}
         <p data-testid="description-card">{cardDescription}</p>
         <p data-testid="attr1-card">{cardAttr1}</p>
         <p data-testid="attr2-card">{cardAttr2}</p>

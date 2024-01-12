@@ -18,7 +18,26 @@ class App extends React.Component {
     },
     cardList: [],
     hasTrunfo: false,
+    filters: {
+      name: '',
+      rarity: 'todas',
+      isSuperTrunfo: false,
+    },
   };
+
+  componentDidMount() {
+    const savedCardList = localStorage.getItem('cardList');
+
+    if (savedCardList) {
+      const parsedCardList = JSON.parse(savedCardList);
+      const hasSuperTrunfo = parsedCardList.some((card) => card.cardTrunfo);
+
+      this.setState({
+        cardList: parsedCardList,
+        hasTrunfo: hasSuperTrunfo,
+      });
+    }
+  }
 
   onInputChange = (event) => {
     // console.log(this);
@@ -97,63 +116,106 @@ class App extends React.Component {
       cardList: newCardList,
       hasTrunfo: hasTrunfo || cardInfo.cardTrunfo,
     });
+    localStorage.setItem('cardList', JSON.stringify(newCardList));
     // console.log(cardInfo.hasTrunfo);
   };
 
   handleDeleteButtonClick = (cardId) => {
     const { cardList } = this.state;
     const filterAllCards = cardList.filter((card) => card.cardId !== cardId);
-    // console.log(filterAllCards);
     const cardListHasTrunfo = filterAllCards.some((card) => card.cardTrunfo === true);
-    // console.log(cardListHasTrunfo);
 
     this.setState({
       cardList: filterAllCards,
       hasTrunfo: cardListHasTrunfo,
+    }, () => {
+      localStorage.setItem('cardList', JSON.stringify(filterAllCards));
     });
   };
 
+  handleNameChange = (event) => {
+    const { filters } = this.state;
+    this.setState({
+      filters: {
+        ...filters,
+        name: event.target.value,
+      },
+    });
+    // console.log(filters.name);
+  };
+
+  handleRarityChange = async (event) => {
+    const { filters } = this.state;
+    this.setState({
+      filters: {
+        ...filters,
+        rarity: event.target.value,
+      },
+    });
+    // console.log(filters.rarity);
+  };
+
+  handleSuperTrunfoChange = (event) => {
+    const { filters } = this.state;
+    this.setState({
+      filters: {
+        ...filters,
+        isSuperTrunfo: event.target.checked,
+      },
+    });
+    // console.log(filters.isSuperTrunfo);
+  };
+
   render() {
-    const { cardInfo, cardList, hasTrunfo } = this.state;
-    // const {
-    //   cardName,
-    //   cardDescription,
-    //   cardAttr1,
-    //   cardAttr2,
-    //   cardAttr3,
-    //   cardImage,
-    //   cardRare,
-    //   cardTrunfo,
-    //   isSaveButtonDisabled,
-    // } = cardInfo;
-    // console.log(this);
+    const { cardInfo, cardList, hasTrunfo, filters } = this.state;
+    // console.log(isSaveButtonDisabled);
+    const filteredCardList = cardList.filter((card) => {
+      const matchesName = card.cardName.includes(filters.name);
+      const matchesRarity = filters
+        .rarity === 'todas' || card.cardRare === filters.rarity;
+      const matchesSuperTrunfo = !filters.isSuperTrunfo || card.cardTrunfo;
+
+      return matchesName && matchesRarity && matchesSuperTrunfo;
+    });
+    // console.log(filters);
+
     return (
       <>
         <div>
           <h1>Tryunfo</h1>
         </div>
-        <Form
-          // cardName="Nome da carta"
-          // cardDescription="Descrição da carta"
-          // cardAttr1={ cardAttr1 }
-          // cardAttr2={ cardAttr2 }
-          // cardAttr3={ cardAttr3 }
-          // cardImage={ cardImage }
-          // cardRare={ cardRare }
-          // cardTrunfo={ cardTrunfo }
-          // isSaveButtonDisabled={ isSaveButtonDisabled }
-          hasTrunfo={ hasTrunfo }
-          { ...cardInfo }
-          onInputChange={ this.onInputChange }
-          onSaveButtonClick={ this.onSaveButtonClick }
-        />
-        <Card
-          { ...cardInfo }
-          cardInfo={ cardInfo }
-        />
+        <div style={ { display: 'flex', justifyContent: 'space-around' } }>
+          <Form
+            hasTrunfo={ hasTrunfo }
+            { ...cardInfo }
+            onInputChange={ this.onInputChange }
+            onSaveButtonClick={ this.onSaveButtonClick }
+          />
+          <Card
+            { ...cardInfo }
+            cardInfo={ cardInfo }
+          />
+        </div>
         <div>
+          <h2>Cartas Cadastradas</h2>
+          <div>
+            <input
+              type="search"
+              placeholder="Digite o nome da carta"
+              onChange={ this.handleNameChange }
+            />
+            <select onChange={ this.handleRarityChange }>
+              <option value="todas">Todas</option>
+              <option value="normal">Normal</option>
+              <option value="raro">Raro</option>
+              <option value="muito raro">Muito Raro</option>
+            </select>
+            <span>Super Trunfo</span>
+            <input type="checkbox" onChange={ this.handleSuperTrunfoChange } />
+          </div>
           <ul>
-            {cardList.map((card) => (
+            {filteredCardList.length === 0 && <p>Nenhuma carta encontrada</p>}
+            {filteredCardList.map((card) => (
               <li key={ card.cardId }>
                 <Card { ...card } />
                 <button

@@ -17,10 +17,11 @@ export default class Form extends Component {
       onSaveButtonClick,
       hasTrunfo,
     } = this.props;
+    const urlRegex = /(https?:\/\/.*\.(?:png|jpg))/i;
 
-    // console.log(onSaveButtonClick);
-    // console.log(cardName);
-    // console.log(verifyTrunfo);
+    // console.log(isSaveButtonDisabled);
+
+    const maxAttrPerCard = 90;
     return (
       <form>
         <label>
@@ -33,6 +34,21 @@ export default class Form extends Component {
             onChange={ onInputChange }
             value={ cardName }
           />
+        </label>
+        <label>
+          <span>Imagem da carta:</span>
+          <div>
+            <input
+              name="cardImage"
+              type="text"
+              data-testid="image-input"
+              placeholder="Insira o caminho para imagem da carta"
+              value={ cardImage }
+              onChange={ onInputChange }
+            />
+            { cardImage.length > 0 && !urlRegex.test(cardImage)
+              ? (<span>URL inválida</span>) : null }
+          </div>
         </label>
         <label>
           Descrição da Carta:
@@ -54,6 +70,9 @@ export default class Form extends Component {
             onChange={ onInputChange }
             value={ cardAttr1 }
           />
+          {cardAttr1 > maxAttrPerCard || cardAttr1 < 0
+            ? (<div><span>Valor inválido, valor deve ser entre 1 e 90</span></div>)
+            : null}
         </label>
         <label>
           <input
@@ -64,6 +83,9 @@ export default class Form extends Component {
             onChange={ onInputChange }
             value={ cardAttr2 }
           />
+          {cardAttr2 > maxAttrPerCard || cardAttr2 < 0
+            ? (<div><span>Valor inválido, valor deve ser entre 1 e 90</span></div>)
+            : null}
         </label>
         <label>
           <input
@@ -74,16 +96,9 @@ export default class Form extends Component {
             onChange={ onInputChange }
             value={ cardAttr3 }
           />
-        </label>
-        <label>
-          <input
-            name="cardImage"
-            type="text"
-            data-testid="image-input"
-            placeholder="Insira o caminho para imagem da carta"
-            value={ cardImage }
-            onChange={ onInputChange }
-          />
+          {cardAttr3 > maxAttrPerCard || cardAttr3 < 0
+            ? (<div><span>Valor inválido, valor deve ser entre 1 e 90</span></div>)
+            : null}
         </label>
         <label>
           Raridade da carta:
@@ -99,18 +114,22 @@ export default class Form extends Component {
           </select>
         </label>
         <label>
-          Essa carta é Super Trunfo?
-          {' '}
           {hasTrunfo
-            ? (<span>Você já tem um Super Trunfo em seu baralho</span>)
-            : (
-              <input
-                name="cardTrunfo"
-                type="checkbox"
-                data-testid="trunfo-input"
-                onChange={ onInputChange }
-                checked={ cardTrunfo }
-              />
+            ? (<span>Você já tem um Super Trunfo em seu baralho</span>) : (
+              <div>
+                <span>
+                  {' '}
+                  Essa carta é Super Trunfo?
+                  {' '}
+                </span>
+                <input
+                  name="cardTrunfo"
+                  type="checkbox"
+                  data-testid="trunfo-input"
+                  onChange={ onInputChange }
+                  checked={ cardTrunfo }
+                />
+              </div>
             )}
         </label>
         <button
