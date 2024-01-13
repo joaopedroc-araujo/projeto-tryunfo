@@ -2,6 +2,7 @@ import React from 'react';
 import Form from './components/Form';
 import './App.css';
 import Card from './components/Card';
+import logo from './assets/tryunfo.svg';
 
 class App extends React.Component {
   state = {
@@ -181,10 +182,14 @@ class App extends React.Component {
 
     return (
       <>
-        <div>
-          <h1>Tryunfo</h1>
-        </div>
-        <div style={ { display: 'flex', justifyContent: 'space-around' } }>
+        <header>
+          <img src={ logo } alt="Tryunfo" className="tryunfo-logo" />
+        </header>
+        <div
+          className="box"
+          style={ { display: 'flex', justifyContent: 'space-around' } }
+        >
+          <div className="adicione-nova-carta">ADICIONE NOVA CARTA</div>
           <Form
             hasTrunfo={ hasTrunfo }
             { ...cardInfo }

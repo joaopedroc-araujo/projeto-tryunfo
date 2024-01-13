@@ -25,7 +25,6 @@ export default class Form extends Component {
     return (
       <form>
         <label>
-          Nome da carta:
           <input
             name="cardName"
             type="text"
@@ -33,6 +32,16 @@ export default class Form extends Component {
             placeholder="Nome da carta"
             onChange={ onInputChange }
             value={ cardName }
+          />
+        </label>
+        <label>
+          <textarea
+            name="cardDescription"
+            type="textarea"
+            data-testid="description-input"
+            placeholder="Descrição:"
+            onChange={ onInputChange }
+            value={ cardDescription }
           />
         </label>
         <label>
@@ -49,17 +58,6 @@ export default class Form extends Component {
             { cardImage.length > 0 && !urlRegex.test(cardImage)
               ? (<span>URL inválida</span>) : null }
           </div>
-        </label>
-        <label>
-          Descrição da Carta:
-          <input
-            name="cardDescription"
-            type="textarea"
-            data-testid="description-input"
-            placeholder="Digite a descrição da carta"
-            onChange={ onInputChange }
-            value={ cardDescription }
-          />
         </label>
         <label>
           <input
