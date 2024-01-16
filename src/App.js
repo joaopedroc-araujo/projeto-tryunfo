@@ -181,16 +181,22 @@ class App extends React.Component {
     // console.log(filters);
 
     return (
-      <>
+      <div>
         <header>
-          <img src={ logo } alt="Tryunfo" className="tryunfo-logo" />
+          <img
+            src={ logo }
+            alt="Tryunfo"
+            className="absolute top-[76px] left-[387.92px] w-[504.31px] h-[302px]"
+          />
         </header>
         <div
-          className="box"
+          className="relative w-full h-[721px] text-left text-9xl
+            text-mediumseagreen font-epilogue"
           style={ { display: 'flex', justifyContent: 'space-around' } }
         >
-          <div className="adicione-nova-carta">ADICIONE NOVA CARTA</div>
           <Form
+            className="[border:none] [outline:none] bg-[transparent] absolute top-[0px] left-[0px]"
+            type="text"
             hasTrunfo={ hasTrunfo }
             { ...cardInfo }
             onInputChange={ this.onInputChange }
@@ -232,7 +238,7 @@ class App extends React.Component {
               </li>))}
           </ul>
         </div>
-      </>
+      </div>
     );
   }
 }

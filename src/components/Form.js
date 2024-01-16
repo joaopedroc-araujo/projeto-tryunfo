@@ -23,7 +23,11 @@ export default class Form extends Component {
 
     const maxAttrPerCard = 90;
     return (
-      <form>
+      <form
+        className="[border:none] [outline:none] bg-[transparent] absolute top-[0px] left-[0px]"
+        type="text"
+      >
+        <div className="adicione-nova-carta">ADICIONE NOVA CARTA</div>
         <label>
           <input
             name="cardName"
